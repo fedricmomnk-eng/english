@@ -1,0 +1,1345 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>تعلّم الإنجليزية – المرحلة الثانوية</title>
+<style>
+/* ================= الأنماط العامة ================= */
+*{box-sizing:border-box}
+:root{
+  --bg:#eef2f7; --card:#ffffff; --ink:#0f172a; --muted:#475569;
+  --primary:#1d4ed8; --primaryD:#1e40af; --accent:#0f766e;
+  --ok:#15803d; --okBg:#dcfce7; --bad:#b91c1c; --badBg:#fee2e2;
+  --warn:#92400e; --warnBg:#fef3c7; --border:#cbd5e1; --gold:#b8860b;
+}
+html,body{margin:0;padding:0}
+body{
+  font-family:"Tajawal","Segoe UI",Tahoma,Arial,sans-serif;
+  background:var(--bg); color:var(--ink); line-height:1.7; font-size:17px;
+  -webkit-text-size-adjust:100%;
+}
+.ltr{direction:ltr;text-align:left}
+.b{font-weight:800}
+.small{font-size:.9rem}
+.muted{color:var(--muted)}
+.hidden{display:none!important}
+
+/* ================= الشريط العلوي ================= */
+.topbar{
+  position:sticky;top:0;z-index:30;background:#0f172a;color:#fff;
+  display:flex;justify-content:space-between;align-items:center;
+  padding:10px 16px;gap:10px;flex-wrap:wrap;
+  box-shadow:0 2px 10px rgba(0,0,0,.25);
+}
+.brand{font-weight:800;font-size:1.15rem}
+.topbar .btn{background:#1e293b;border-color:#334155;color:#fff;min-height:44px;padding:8px 16px}
+
+/* ================= الحاوية ================= */
+#view{max-width:980px;margin:0 auto;padding:18px 14px 70px}
+
+/* ================= تنبيه الدعم ================= */
+.warnbar{
+  max-width:980px;margin:12px auto 0;padding:12px 16px;border-radius:14px;
+  background:var(--warnBg);border:2px solid #f59e0b;color:#78350f;font-weight:700;
+}
+
+/* ================= الأزرار ================= */
+.btn{
+  font-family:inherit;font-size:1rem;font-weight:800;border-radius:12px;
+  border:2px solid var(--border);background:#fff;color:var(--ink);
+  padding:12px 18px;min-height:50px;cursor:pointer;transition:.15s;
+  display:inline-flex;align-items:center;gap:8px;justify-content:center;
+}
+.btn:hover:not(:disabled){transform:translateY(-1px);box-shadow:0 6px 16px rgba(15,23,42,.14)}
+.btn:disabled{opacity:.5;cursor:not-allowed;transform:none;box-shadow:none}
+.btn.primary{background:var(--primary);border-color:var(--primary);color:#fff}
+.btn.accent{background:var(--accent);border-color:var(--accent);color:#fff}
+.btn.ghost{background:transparent;border-color:transparent;color:var(--primary);text-decoration:underline;min-height:44px}
+.btn.block{width:100%}
+.btn.small{font-size:.9rem;min-height:42px;padding:8px 14px}
+
+/* ================= البطاقات ================= */
+.card{
+  background:var(--card);border:1px solid var(--border);border-radius:16px;
+  padding:16px;margin-bottom:14px;box-shadow:0 2px 8px rgba(15,23,42,.06);
+}
+.hero{
+  background:linear-gradient(135deg,#1d4ed8,#0f766e);color:#fff;border-radius:18px;
+  padding:22px;margin-bottom:16px;
+}
+.hero h1{margin:0 0 6px;font-size:1.5rem}
+.hero p{margin:0;opacity:.95}
+
+/* ================= شبكة الوحدات ================= */
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:14px}
+.unit-card h2{margin:0 0 4px;font-size:1.2rem}
+.checks{list-style:none;padding:0;margin:10px 0;font-size:.95rem}
+.checks li{padding:4px 0;color:var(--muted)}
+.checks li.done{color:var(--ok);font-weight:800}
+
+/* ================= التبويبات ================= */
+.unit-head{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:8px}
+.unit-head h1{font-size:1.3rem;margin:0}
+.tabs{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0}
+.tab{
+  font-family:inherit;font-size:.95rem;font-weight:800;padding:10px 14px;min-height:46px;
+  border-radius:12px;border:2px solid var(--border);background:#fff;color:var(--ink);cursor:pointer;
+}
+.tab.active{background:var(--primary);border-color:var(--primary);color:#fff}
+
+/* ================= عناصر النطق ================= */
+.pron-text{font-size:1.25rem;font-weight:800;direction:ltr;text-align:left;margin-bottom:2px}
+.pron-ar{color:var(--muted);font-size:.95rem;margin-bottom:10px}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.row.between{justify-content:space-between}
+.fb{margin-top:12px}
+.said{background:#f1f5f9;border-radius:10px;padding:8px 12px;margin-bottom:8px;color:#334155}
+.scored{direction:ltr;text-align:left;font-size:1.15rem;line-height:2;margin-bottom:8px}
+.scored .ok{background:var(--okBg);color:#14532d;border-radius:6px;padding:1px 4px;font-weight:800}
+.scored .bad{background:var(--badBg);color:#7f1d1d;border-radius:6px;padding:1px 4px;font-weight:800;text-decoration:underline wavy #b91c1c}
+.score-bar{height:14px;background:#e2e8f0;border-radius:99px;overflow:hidden;margin:8px 0}
+.score-fill{height:100%;background:linear-gradient(90deg,#0f766e,#1d4ed8);transition:width .4s}
+.tip{background:#eff6ff;border-right:5px solid var(--primary);padding:8px 12px;border-radius:8px;margin-top:8px;font-size:.95rem}
+.rec{color:var(--bad);font-weight:800;animation:pulse 1s infinite}
+@keyframes pulse{50%{opacity:.4}}
+
+/* ================= الدرس التفاعلي ================= */
+.lesson-top{display:flex;justify-content:space-between;align-items:center;font-weight:800;margin-bottom:8px}
+.timer{background:#0f172a;color:#fff;padding:4px 14px;border-radius:99px;font-variant-numeric:tabular-nums}
+.progress{height:12px;background:#e2e8f0;border-radius:99px;overflow:hidden;margin-bottom:14px}
+.progress-fill{height:100%;width:0;background:linear-gradient(90deg,#1d4ed8,#0f766e);transition:width .35s}
+.q{font-weight:800;margin:0 0 12px}
+.emoji{font-size:5rem;text-align:center;line-height:1.2;margin:6px 0 14px}
+.options{display:grid;gap:10px}
+.option{width:100%;justify-content:flex-start;direction:ltr;text-align:left;font-size:1.05rem}
+.ok-btn{background:var(--okBg)!important;border-color:var(--ok)!important;color:#14532d!important}
+.bad-btn{background:var(--badBg)!important;border-color:var(--bad)!important;color:#7f1d1d!important}
+.pool,.answer-area{display:flex;flex-wrap:wrap;gap:8px;direction:ltr;justify-content:flex-start}
+.pool{margin:10px 0}
+.answer-area{min-height:62px;border:2px dashed var(--border);border-radius:12px;padding:8px;background:#f8fafc}
+.chip{
+  font-family:inherit;font-size:1.05rem;font-weight:800;padding:10px 14px;min-height:46px;
+  border-radius:10px;border:2px solid var(--border);background:#fff;cursor:pointer;
+}
+.chip:hover{background:#eef2ff}
+.ph{color:var(--muted);font-size:.95rem;direction:rtl}
+.match-wrap{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.match-col{display:grid;gap:8px;align-content:start}
+.mbtn{
+  font-family:inherit;font-size:1rem;font-weight:800;padding:12px;min-height:52px;
+  border-radius:12px;border:2px solid var(--border);background:#fff;cursor:pointer;width:100%;
+}
+.mbtn.sel{border-color:var(--primary);background:#e0e7ff}
+.mbtn.done{background:var(--okBg);border-color:var(--ok);color:#14532d;cursor:default;opacity:.85}
+.mbtn.err{background:var(--badBg);border-color:var(--bad)}
+.bullets{margin:8px 0;padding-inline-start:22px}
+.bullets li{margin-bottom:6px}
+.summary h2{margin-top:0}
+
+/* ================= القراءة ================= */
+.passage{
+  direction:ltr;text-align:left;font-size:1.3rem;line-height:2.2;
+  background:#f8fafc;border:1px solid var(--border);border-radius:12px;padding:16px;margin:10px 0;
+}
+.pw{cursor:pointer;border-radius:6px;padding:1px 2px;transition:.12s}
+.pw:hover{background:#e0e7ff}
+.pw.matched{background:var(--okBg);color:#14532d}
+.pw.current{background:#fde68a;color:#78350f;font-weight:800;box-shadow:0 0 0 2px #f59e0b}
+.trans-box{
+  background:#eff6ff;border:2px solid #bfdbfe;border-radius:12px;padding:10px 14px;
+  font-weight:700;margin-bottom:12px;
+}
+.read-item h3{margin:0 0 4px;font-size:1.1rem}
+
+/* ================= الاختبار الصوتي ================= */
+.test-sentence{
+  direction:ltr;text-align:left;font-size:1.4rem;font-weight:800;
+  background:#f8fafc;border:2px solid var(--border);border-radius:14px;padding:18px;margin:12px 0;
+}
+.result-big{font-size:2.2rem;font-weight:800;text-align:center;margin:10px 0}
+.pass{color:var(--ok)}
+.fail{color:var(--bad)}
+
+/* ================= الشهادة ================= */
+.input{
+  font-family:inherit;font-size:1.05rem;padding:12px 14px;min-height:52px;width:100%;
+  border:2px solid var(--border);border-radius:12px;margin:8px 0 14px;
+}
+.cert-preview{margin-top:16px;overflow:auto}
+.cert-preview canvas{max-width:100%;height:auto;border:1px solid var(--border);border-radius:10px}
+
+/* ================= الجوال ================= */
+@media (max-width:520px){
+  body{font-size:16px}
+  .match-wrap{grid-template-columns:1fr 1fr;gap:8px}
+  .emoji{font-size:4rem}
+  .passage{font-size:1.15rem}
+  .test-sentence{font-size:1.15rem}
+}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="brand">🎓 تعلّم الإنجليزية – الثانوية</div>
+  <button class="btn small" id="homeBtn">🏠 الرئيسية</button>
+</div>
+
+<div id="warnBar" class="warnbar hidden"></div>
+
+<main id="view"></main>
+
+<!-- مكتبة jsPDF لتحميل الشهادة بصيغة PDF -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+<script>
+/* ==========================================================================
+   1) بيانات المحتوى — يعدّلها المعلم بسهولة دون لمس بقية الكود
+   ========================================================================== */
+const COURSE = {
+  passingScore: 70,        // درجة النجاح في الاختبار الصوتي (قابلة للتعديل)
+  lessonSeconds: 300,      // مدة الدرس التفاعلي = 5 دقائق
+
+  units: [
+    /* ================= الوحدة الأولى ================= */
+    {
+      id: "u1",
+      name: "الوحدة الأولى: الحياة اليومية",
+      nameEn: "Unit 1 — Daily Life",
+
+      pronunciation: [
+        { text: "breakfast", ar: "الفطور" },
+        { text: "homework", ar: "الواجب المنزلي" },
+        { text: "library", ar: "المكتبة" },
+        { text: "I usually have breakfast at seven o'clock.", ar: "أتناول الفطور عادةً في الساعة السابعة." },
+        { text: "She goes to the library after school.", ar: "تذهب إلى المكتبة بعد المدرسة." }
+      ],
+
+      lesson: {
+        title: "الروتين اليومي",
+        intro: "في هذا الدرس ستتعلم كلمات عن يومك، وترتّب جملة إنجليزية، وتصل الكلمات بمعانيها. المدة: ٥ دقائق.",
+        activities: [
+          { type: "vocab", emoji: "🍳", answer: "breakfast", options: ["breakfast", "lunch", "dinner"], ar: "الفطور" },
+          { type: "order", words: ["I", "go", "to", "school", "every", "day"], answer: "I go to school every day." },
+          { type: "mcq", question: "Choose the correct sentence:", options: ["She go to school.", "She goes to school.", "She going to school."], answer: 1 },
+          { type: "match", pairs: [["breakfast", "الفطور"], ["homework", "الواجب"], ["library", "المكتبة"], ["bus", "الحافلة"]] }
+        ],
+        summary: [
+          "نستخدم المضارع البسيط للحديث عن الروتين اليومي: I go / She goes.",
+          "نضيف s للفعل مع he / she / it.",
+          "كلمات جديدة: breakfast, homework, library, bus.",
+          "ترتيب الجملة الإنجليزية: الفاعل + الفعل + بقية الجملة."
+        ]
+      },
+
+      readings: [
+        {
+          id: "p1",
+          level: "سهل",
+          title: "My School Day",
+          text: "My name is Omar. I am a high school student in Riyadh. Every morning, I wake up at six o'clock. I have breakfast with my family. Then I go to school by bus. My first class starts at eight. I like English and science. At noon, I eat lunch with my friends. After school, I do my homework and read a book. I go to bed at ten o'clock. I am happy because I love my school."
+        },
+        {
+          id: "p2",
+          level: "سهل",
+          title: "A Visit to the Market",
+          text: "On Friday, my mother and I go to the market. The market is near our house. We buy fresh fruit and vegetables. My mother buys bread and milk, too. I carry the heavy bags. The market is busy and noisy. People talk and laugh. After we finish, we go home and cook a big lunch. I like Fridays because I can help my mother. It is a simple day, but it is a happy day."
+        }
+      ],
+
+      voiceTest: [
+        "I usually have breakfast at seven o'clock.",
+        "She goes to the library after school.",
+        "My first class starts at eight.",
+        "I do my homework every day.",
+        "We buy fresh fruit at the market.",
+        "I go to bed at ten o'clock."
+      ]
+    },
+
+    /* ================= الوحدة الثانية ================= */
+    {
+      id: "u2",
+      name: "الوحدة الثانية: المدرسة والتقنية",
+      nameEn: "Unit 2 — School & Technology",
+
+      pronunciation: [
+        { text: "technology", ar: "التقنية" },
+        { text: "internet", ar: "الإنترنت" },
+        { text: "message", ar: "رسالة" },
+        { text: "I use my laptop to join the class.", ar: "أستخدم حاسوبي المحمول للانضمام إلى الحصة." },
+        { text: "Please turn off your phone when you study.", ar: "أرجو إطفاء هاتفك عند الدراسة." }
+      ],
+
+      lesson: {
+        title: "التقنية والتعلّم",
+        intro: "في هذا الدرس ستتعلم كلمات عن التقنية، وكيف تستخدمها للتعلّم بطريقة صحيحة. المدة: ٥ دقائق.",
+        activities: [
+          { type: "vocab", emoji: "💻", answer: "laptop", options: ["lamp", "laptop", "letter"], ar: "حاسوب محمول" },
+          { type: "order", words: ["She", "uses", "her", "phone", "to", "learn", "English"], answer: "She uses her phone to learn English." },
+          { type: "mcq", question: "Which word means the internet?", options: ["internet", "message", "photo"], answer: 0 },
+          { type: "match", pairs: [["laptop", "حاسوب محمول"], ["phone", "هاتف"], ["internet", "إنترنت"], ["message", "رسالة"]] }
+        ],
+        summary: [
+          "نستخدم الفعل use مع to + المصدر للتعبير عن الهدف: I use my phone to learn.",
+          "كلمات جديدة: laptop, phone, internet, message.",
+          "التقنية تساعدنا على التعلّم إذا استخدمناها بشكل صحيح.",
+          "نضيف s للفعل مع he / she / it: She uses."
+        ]
+      },
+
+      readings: [
+        {
+          id: "p3",
+          level: "متوسط",
+          title: "Learning Online",
+          text: "Last year, my school started online lessons. At first, I did not like them. I missed my teachers and my friends. But now I understand that technology is useful. I use my laptop to join the class. I can see the teacher and hear her clearly. I can also write notes and send them to my friends. Sometimes the internet is slow, and I miss a part of the lesson. Then I watch the video again. Online learning is not perfect, but it helps me a lot."
+        },
+        {
+          id: "p4",
+          level: "متوسط",
+          title: "A Smart Phone in My Pocket",
+          text: "Many students in Saudi Arabia have smart phones. A smart phone is small, but it can do many things. You can call your family, send messages, and take photos. You can also use it to learn English. There are free apps for new words and short stories. But a smart phone can be a problem. Some students play games in class instead of listening. My advice is simple: use your phone to learn, not to waste time. Turn it off when you study."
+        }
+      ],
+
+      voiceTest: [
+        "I use my laptop to join the class.",
+        "Technology is useful for learning English.",
+        "Please turn off your phone when you study.",
+        "Some students play games in class.",
+        "I can see the teacher and hear her clearly.",
+        "Online learning helps me a lot."
+      ]
+    },
+
+    /* ================= الوحدة الثالثة ================= */
+    {
+      id: "u3",
+      name: "الوحدة الثالثة: البيئة والمستقبل",
+      nameEn: "Unit 3 — Environment & Future",
+
+      pronunciation: [
+        { text: "environment", ar: "البيئة" },
+        { text: "energy", ar: "الطاقة" },
+        { text: "solar", ar: "شمسي" },
+        { text: "We must save water every day.", ar: "يجب أن نوفّر الماء كل يوم." },
+        { text: "Clean energy will create new jobs.", ar: "ستوفّر الطاقة النظيفة وظائف جديدة." }
+      ],
+
+      lesson: {
+        title: "البيئة والمستقبل",
+        intro: "في هذا الدرس ستتعلم كلمات عن البيئة والطاقة، وتتحدث عن المستقبل. المدة: ٥ دقائق.",
+        activities: [
+          { type: "vocab", emoji: "💧", answer: "water", options: ["fire", "wind", "water"], ar: "ماء" },
+          { type: "order", words: ["We", "must", "save", "water", "every", "day"], answer: "We must save water every day." },
+          { type: "mcq", question: "Which one is clean energy?", options: ["Solar energy", "Oil", "Gas"], answer: 0 },
+          { type: "match", pairs: [["water", "ماء"], ["sun", "الشمس"], ["energy", "طاقة"], ["future", "مستقبل"]] }
+        ],
+        summary: [
+          "نستخدم must للتعبير عن الضرورة: We must save water.",
+          "كلمات جديدة: water, energy, solar, future, environment.",
+          "الطاقة الشمسية طاقة نظيفة ومهمة لمستقبل بلادنا.",
+          "will + المصدر للتعبير عن المستقبل: will create."
+        ]
+      },
+
+      readings: [
+        {
+          id: "p5",
+          level: "متوسط",
+          title: "Water Is Life",
+          text: "Water is the most important thing in our lives. In Saudi Arabia, water is very precious because we live in a desert. We cannot waste it. There are simple ways to save water. First, turn off the tap when you clean your teeth. Second, take a short shower, not a long one. Third, fix any broken pipes at home. Farmers also need water for their plants, so they use special machines. If every person saves a little water, we will have enough for the future."
+        },
+        {
+          id: "p6",
+          level: "صعب",
+          title: "The Future of Energy",
+          text: "Scientists say that the world needs clean energy. Oil and gas are useful, but they pollute the air. Saudi Arabia is building large solar power stations. The sun is strong here, so solar energy is a good choice. In the future, we will see more electric cars and smart homes. A smart home uses less electricity because it controls the lights and the air conditioning by itself. These changes will create new jobs for young people. Our country is preparing for a better future, and students like us are part of it."
+        },
+        {
+          id: "p7",
+          level: "صعب",
+          title: "A Letter to My Future Self",
+          text: "Dear future me, I hope you are reading this letter with a smile. Today I am sixteen years old, and I have many dreams. I want to finish high school with good marks, and I want to study computer science at university. I also want to help my community. Last month, I joined a group that cleans public parks every Saturday. We collect rubbish and plant small trees. It was hard work, but I felt proud. I learned that small actions can change a lot. Please do not forget these lessons, and keep helping people."
+        }
+      ],
+
+      voiceTest: [
+        "Water is very precious in our country.",
+        "We must not waste water.",
+        "Saudi Arabia is building solar power stations.",
+        "Clean energy will create new jobs.",
+        "Small actions can change a lot.",
+        "I want to help my community."
+      ]
+    }
+  ],
+
+  /* ============ قاموس الترجمة (يُستخدم عند الضغط على كلمة في القراءة) ============ */
+  glossary: {
+    "a":"أداة تنكير (واحد)","actions":"أفعال","advice":"نصيحة","after":"بعد","again":"مرة أخرى",
+    "air":"هواء","also":"أيضًا","am":"أكون","and":"و","any":"أي","apps":"تطبيقات","are":"تكون",
+    "at":"في / عند","be":"يكون","because":"لأن","bed":"سرير","better":"أفضل","big":"كبير",
+    "book":"كتاب","bread":"خبز","breakfast":"فطور","broken":"مكسور","building":"يبني","bus":"حافلة",
+    "busy":"مزدحم","but":"لكن","buy":"يشتري","buys":"يشتري","by":"بواسطة","call":"يتصل",
+    "can":"يستطيع","cannot":"لا يستطيع","cars":"سيارات","carry":"يحمل","change":"يغيّر",
+    "changes":"تغييرات","choice":"خيار","class":"صف / حصة","clean":"ينظف","cleans":"ينظف",
+    "clearly":"بوضوح","collect":"يجمع","community":"مجتمع","computer":"حاسوب","conditioning":"تكييف",
+    "controls":"يتحكم","cook":"يطبخ","country":"بلد","create":"يُنشئ","day":"يوم","dear":"عزيزي",
+    "desert":"صحراء","did":"فعل مساعد (ماضٍ)","do":"يفعل","dreams":"أحلام","eight":"ثمانية",
+    "electric":"كهربائي","electricity":"كهرباء","energy":"طاقة","english":"الإنجليزية","enough":"كافٍ",
+    "environment":"البيئة","every":"كل","family":"عائلة","farmers":"مزارعون","felt":"شعر",
+    "finish":"ينتهي","first":"أول","fix":"يصلح","for":"لـ","forget":"ينسى","free":"مجاني",
+    "fresh":"طازج","friday":"الجمعة","fridays":"أيام الجمعة","friends":"أصدقاء","fruit":"فاكهة",
+    "future":"مستقبل","games":"ألعاب","gas":"غاز","go":"يذهب","good":"جيد","group":"مجموعة",
+    "had":"ملك (ماضٍ)","happy":"سعيد","hard":"صعب / شاق","has":"يملك","have":"يملك","he":"هو",
+    "hear":"يسمع","heavy":"ثقيل","help":"يساعد","helping":"مساعدة","helps":"يساعد","her":"لها",
+    "here":"هنا","high":"عالي / ثانوي","home":"منزل","homes":"منازل","homework":"واجب منزلي",
+    "hope":"يأمل","house":"منزل","i":"أنا","if":"إذا","important":"مهم","in":"في",
+    "instead":"بدلًا من","internet":"الإنترنت","is":"يكون","it":"هو/هي (لغير العاقل)","itself":"نفسه",
+    "jobs":"وظائف","joined":"انضم","keep":"يستمر","laptop":"حاسوب محمول","large":"كبير",
+    "last":"الماضي","laugh":"يضحك","learn":"يتعلم","learned":"تعلّم","learning":"التعلّم",
+    "less":"أقل","lesson":"درس","lessons":"دروس","letter":"رسالة","lights":"أضواء","like":"يحب / مثل",
+    "listening":"الاستماع","little":"قليل","live":"يعيش","lives":"حياة","long":"طويل","lot":"كثير",
+    "love":"يحب","machines":"آلات","many":"كثير","market":"سوق","marks":"درجات","me":"أنا (مفعول)",
+    "message":"رسالة","messages":"رسائل","milk":"حليب","miss":"يفتقد","missed":"افتقد","month":"شهر",
+    "more":"أكثر","morning":"صباح","most":"الأكثر","mother":"أم","my":"خاصتي","name":"اسم",
+    "near":"قريب","need":"يحتاج","needs":"يحتاج","new":"جديد","noisy":"صاخب","noon":"الظهر",
+    "not":"ليس","notes":"ملاحظات","now":"الآن","o'clock":"الساعة","of":"من","off":"إيقاف",
+    "oil":"نفط","old":"عمر / قديم","on":"على","one":"واحد","online":"عبر الإنترنت","our":"خاصتنا",
+    "parks":"حدائق","part":"جزء","people":"ناس","perfect":"مثالي","person":"شخص","phones":"هواتف",
+    "phone":"هاتف","photos":"صور","pipes":"أنابيب","plant":"يزرع","plants":"نباتات","play":"يلعب",
+    "please":"من فضلك","pollute":"يلوث","power":"طاقة","precious":"ثمين","preparing":"يستعد",
+    "problem":"مشكلة","proud":"فخور","public":"عام","read":"يقرأ","reading":"يقرأ","rubbish":"قمامة",
+    "said":"قال","saturday":"السبت","saudi":"سعودي","arabia":"العربية","save":"يوفّر","saves":"يوفّر",
+    "say":"يقول","scientists":"علماء","school":"مدرسة","science":"علوم","see":"يرى","send":"يرسل",
+    "shower":"دش","simple":"بسيط","six":"ستة","sixteen":"ستة عشر","slow":"بطيء","small":"صغير",
+    "smart":"ذكي","smile":"ابتسامة","so":"لذلك","solar":"شمسي","some":"بعض","sometimes":"أحيانًا",
+    "special":"خاص","started":"بدأ","starts":"يبدأ","stations":"محطات","stories":"قصص","strong":"قوي",
+    "student":"طالب","students":"طلاب","study":"يدرس","sun":"الشمس","take":"يأخذ","talk":"يتحدث",
+    "tap":"صنبور","teacher":"معلم","teachers":"معلمون","teeth":"أسنان","technology":"تقنية","ten":"عشرة",
+    "that":"أن / ذلك","the":"الـ","their":"خاصتهم","them":"هم (مفعول)","then":"ثم","there":"هناك",
+    "these":"هذه","they":"هم","thing":"شيء","things":"أشياء","third":"ثالث","this":"هذا","time":"وقت",
+    "to":"إلى","today":"اليوم","too":"أيضًا","trees":"أشجار","turn":"يُطفئ / يدير","understand":"يفهم",
+    "university":"جامعة","up":"أعلى","us":"نحن (مفعول)","use":"يستخدم","useful":"مفيد","uses":"يستخدم",
+    "vegetables":"خضروات","very":"جدًا","video":"فيديو","want":"يريد","was":"كان","waste":"يهدر",
+    "watch":"يشاهد","water":"ماء","ways":"طرق","we":"نحن","when":"عندما","will":"سوف","with":"مع",
+    "words":"كلمات","work":"عمل","world":"عالم","write":"يكتب","year":"سنة","years":"سنوات",
+    "young":"شاب","your":"خاصتك","you":"أنت"
+  }
+};
+
+/* ==========================================================================
+   2) فحص دعم المتصفح
+   ========================================================================== */
+const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+const hasTTS = ("speechSynthesis" in window);
+
+(function checkSupport(){
+  const bar = document.getElementById("warnBar");
+  const msgs = [];
+  if (!hasTTS) msgs.push("متصفحك لا يدعم قراءة النصوص صوتيًا (Text-to-Speech).");
+  if (!SR) msgs.push("متصفحك لا يدعم التعرّف على الصوت، لذلك لن يعمل زر «تدرّب» أو القراءة الصوتية.");
+  if (msgs.length){
+    bar.classList.remove("hidden");
+    bar.innerHTML = "⚠️ " + msgs.join(" ") +
+      "<br>ننصح باستخدام <b>Google Chrome</b> على الحاسوب أو الأندرويد، مع السماح بالوصول إلى الميكروفون، وفتح الصفحة عبر HTTPS أو localhost.";
+  }
+})();
+
+/* ==========================================================================
+   3) أدوات مساعدة
+   ========================================================================== */
+const $view = document.getElementById("view");
+
+function esc(s){
+  return String(s).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+}
+function shuffle(arr){
+  const a = arr.slice();
+  for (let i = a.length - 1; i > 0; i--){
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+function fmtTime(sec){
+  sec = Math.max(0, sec);
+  const m = String(Math.floor(sec / 60)).padStart(2, "0");
+  const s = String(sec % 60).padStart(2, "0");
+  return m + ":" + s;
+}
+function normWord(w){
+  return String(w).toLowerCase().replace(/[^a-z0-9']/g, "").replace(/'/g, "");
+}
+
+/* ==========================================================================
+   4) التخزين المحلي (localStorage) — محمي بـ try/catch ولا يُرسل لأي خادم
+   ========================================================================== */
+const STORE_KEY = "en_sa_progress_v1";
+const NAME_KEY  = "en_sa_name_v1";
+let progress = {};
+
+function loadProgress(){
+  try {
+    const raw = localStorage.getItem(STORE_KEY);
+    progress = raw ? (JSON.parse(raw) || {}) : {};
+  } catch (e) {
+    progress = {};
+  }
+}
+function saveProgress(){
+  try { localStorage.setItem(STORE_KEY, JSON.stringify(progress)); } catch (e) { /* لا يوجد تخزين متاح */ }
+}
+function loadName(){
+  try { return localStorage.getItem(NAME_KEY) || ""; } catch (e) { return ""; }
+}
+function saveName(n){
+  try { localStorage.setItem(NAME_KEY, n); } catch (e) {}
+}
+function pget(uid){
+  if (!progress[uid]) progress[uid] = { pron: {}, readings: {}, lesson: false, voiceTest: null, passed: false };
+  if (!progress[uid].pron) progress[uid].pron = {};
+  if (!progress[uid].readings) progress[uid].readings = {};
+  return progress[uid];
+}
+
+/* ==========================================================================
+   5) الصوت: النطق (TTS) والتعرّف على الكلام (STT)
+   ========================================================================== */
+let enVoice = null;
+function pickVoice(){
+  try {
+    const vs = window.speechSynthesis.getVoices() || [];
+    enVoice = vs.find(v => /en[-_]US/i.test(v.lang)) || vs.find(v => /^en/i.test(v.lang)) || null;
+  } catch (e) {}
+}
+if (hasTTS){
+  pickVoice();
+  window.speechSynthesis.onvoiceschanged = pickVoice;
+}
+function speak(text, rate){
+  if (!hasTTS) return;
+  try {
+    window.speechSynthesis.cancel();
+    const u = new SpeechSynthesisUtterance(text);
+    u.lang = "en-US";
+    u.rate = rate || 0.92;
+    if (enVoice) u.voice = enVoice;
+    window.speechSynthesis.speak(u);
+  } catch (e) {}
+}
+
+let activeRec = null;
+function stopAllAudio(){
+  try { if (hasTTS) window.speechSynthesis.cancel(); } catch (e) {}
+  if (activeRec){ try { activeRec.abort(); } catch (e) {} activeRec = null; }
+}
+
+/* مقارنة النص المنطوق بالنص الهدف */
+function lev(a, b){
+  const m = a.length, n = b.length;
+  if (!m) return n;
+  if (!n) return m;
+  let prev = Array.from({length: n + 1}, (_, i) => i);
+  for (let i = 1; i <= m; i++){
+    const cur = [i];
+    for (let j = 1; j <= n; j++){
+      cur[j] = Math.min(prev[j] + 1, cur[j - 1] + 1, prev[j - 1] + (a[i - 1] === b[j - 1] ? 0 : 1));
+    }
+    prev = cur;
+  }
+  return prev[n];
+}
+function sim(a, b){
+  if (a === b) return 1;
+  const L = Math.max(a.length, b.length) || 1;
+  return 1 - lev(a, b) / L;
+}
+function compareText(target, spoken){
+  const tTokens = target.split(/\s+/).filter(Boolean);
+  const sTokens = spoken.split(/\s+/).filter(Boolean).map(normWord).filter(Boolean);
+  let si = 0;
+  const flags = tTokens.map(tw => {
+    const t = normWord(tw);
+    if (!t) return true;
+    for (let k = si; k < Math.min(sTokens.length, si + 4); k++){
+      if (sim(t, sTokens[k]) >= 0.72){ si = k + 1; return true; }
+    }
+    return false;
+  });
+  const correct = flags.filter(Boolean).length;
+  return {
+    flags, correct, total: tTokens.length,
+    percent: tTokens.length ? Math.round(correct / tTokens.length * 100) : 0
+  };
+}
+function tipFor(p){
+  if (p >= 90) return "🌟 ممتاز! نطقك واضح جدًا. جرّب جملة أصعب.";
+  if (p >= 70) return "👍 جيد! حاول أن تنطق الكلمات المُعلّمة بالأحمر ببطء أكثر.";
+  if (p >= 40) return "💪 لا بأس! استمع إلى الكلمة أولًا ثم أعد المحاولة بصوت أوضح.";
+  return "🎧 استمع جيدًا، ثم انطق ببطء وبصوت أعلى. المحاولة مرة أخرى ستساعدك.";
+}
+
+/* ==========================================================================
+   6) حالة التطبيق والتنقل
+   ========================================================================== */
+const cur = { view: "home", unitIndex: 0, tab: "pron" };
+let activeTimer = null;
+let lessonState = null;
+let testState = null;
+let certCanvas = null;
+
+function clearActiveTimer(){
+  if (activeTimer){ clearInterval(activeTimer); activeTimer = null; }
+}
+
+function renderApp(){
+  clearActiveTimer();
+  stopAllAudio();
+  if (cur.view === "home") renderHome();
+  else renderUnitView();
+  window.scrollTo(0, 0);
+}
+
+document.getElementById("homeBtn").onclick = () => {
+  cur.view = "home";
+  lessonState = null; testState = null;
+  renderApp();
+};
+
+/* ==========================================================================
+   7) الشاشة الرئيسية
+   ========================================================================== */
+function renderHome(){
+  let html = `
+    <section class="hero">
+      <h1>تعلّم الإنجليزية خطوة بخطوة</h1>
+      <p>ثلاث وحدات قصيرة: تدريب على النطق، درس تفاعلي، قراءة بصوت عالٍ، ثم اختبار صوتي وشهادة.</p>
+    </section>
+    <div class="grid">`;
+
+  COURSE.units.forEach((u, i) => {
+    const p = progress[u.id] || {};
+    const pronCount = Object.keys(p.pron || {}).length;
+    const readCount = Object.keys(p.readings || {}).length;
+    html += `
+      <article class="card unit-card">
+        <h2>${esc(u.name)}</h2>
+        <p class="muted small ltr">${esc(u.nameEn)}</p>
+        <ul class="checks">
+          <li class="${pronCount ? "done" : ""}">🗣️ تدريب النطق (${pronCount}/${u.pronunciation.length})</li>
+          <li class="${p.lesson ? "done" : ""}">📘 الدرس التفاعلي</li>
+          <li class="${readCount ? "done" : ""}">📖 القراءة (${readCount}/${u.readings.length})</li>
+          <li class="${p.passed ? "done" : ""}">🎤 الاختبار الصوتي${p.voiceTest != null ? " – " + p.voiceTest + "%" : ""}</li>
+        </ul>
+        <button class="btn primary block" data-unit="${i}">ابدأ الوحدة ←</button>
+      </article>`;
+  });
+  // تكملة renderHome من السطر المقطوع:
+  html += `</div>`;
+  $view.innerHTML = html;
+  $view.querySelectorAll('[data-unit]').forEach(b => {
+    b.onclick = () => {
+      cur.view = "unit";
+      cur.unitIndex = +b.dataset.unit;
+      cur.tab = "pron";
+      renderApp();
+    };
+  });
+}
+
+/* ==========================================================================
+   8) شاشة الوحدة (تبويبات)
+   ========================================================================== */
+function resetLesson(){
+  if (lessonState && lessonState.timerId){
+    try { clearInterval(lessonState.timerId); } catch (e){}
+  }
+  lessonState = null;
+}
+
+function renderUnitView(){
+  const u = COURSE.units[cur.unitIndex];
+  const p = pget(u.id);
+
+  const tabs = [
+    { id: "pron",    label: "🗣️ النطق" },
+    { id: "lesson",  label: "📘 الدرس" },
+    { id: "reading", label: "📖 القراءة" },
+    { id: "test",    label: "🎤 الاختبار" },
+    { id: "cert",    label: "🏆 الشهادة" }
+  ];
+
+  $view.innerHTML = `
+    <div class="unit-head">
+      <h1>${esc(u.name)}</h1>
+      <span class="muted small ltr">${esc(u.nameEn)}</span>
+    </div>
+    <div class="tabs">
+      ${tabs.map(t => `<button class="tab ${cur.tab === t.id ? 'active' : ''}" data-tab="${t.id}">${t.label}</button>`).join('')}
+    </div>
+    <div id="tabBody"></div>`;
+
+  $view.querySelectorAll('[data-tab]').forEach(b => {
+    b.onclick = () => {
+      if (b.dataset.tab === cur.tab) return;
+      resetLesson();
+      testState = null;
+      cur.tab = b.dataset.tab;
+      renderApp();
+    };
+  });
+
+  const body = document.getElementById('tabBody');
+  if      (cur.tab === 'pron')    renderPron(body, u, p);
+  else if (cur.tab === 'lesson')  renderLesson(body, u, p);
+  else if (cur.tab === 'reading') renderReading(body, u, p);
+  else if (cur.tab === 'test')    renderTest(body, u, p);
+  else if (cur.tab === 'cert')    renderCert(body, u, p);
+}
+
+/* ==========================================================================
+   9) تدريب النطق
+   ========================================================================== */
+function renderPron(body, u, p){
+  body.innerHTML = `
+    <div class="card">
+      <h2 style="margin-top:0">🗣️ تدريب النطق</h2>
+      <p class="muted small">اضغط 🔊 للاستماع، ثم 🎤 لتسجيل نطقك. النتيجة تُحفظ تلقائيًا.</p>
+      <div id="pronList"></div>
+    </div>`;
+
+  const list = document.getElementById('pronList');
+  u.pronunciation.forEach((item, idx) => {
+    const saved = p.pron[idx];
+    const card = document.createElement('div');
+    card.className = 'card';
+    card.style.marginBottom = '10px';
+    card.innerHTML = `
+      <div class="pron-text">${esc(item.text)}</div>
+      <div class="pron-ar">${esc(item.ar)}</div>
+      <div class="row">
+        <button class="btn small" data-act="speak">🔊 استمع</button>
+        <button class="btn small primary" data-act="rec">🎤 تدرّب</button>
+        <span class="small" data-score style="font-weight:800;color:${saved>=70?'var(--ok)':'var(--muted)'}">
+          ${saved != null ? 'آخر نتيجة: ' + saved + '%' : ''}
+        </span>
+      </div>
+      <div class="fb" data-fb></div>`;
+    list.appendChild(card);
+
+    card.querySelector('[data-act="speak"]').onclick = () => speak(item.text);
+    card.querySelector('[data-act="rec"]').onclick = (e) => {
+      const btn = e.currentTarget;
+      const fbEl = card.querySelector('[data-fb]');
+      startRecognition(item.text, fbEl, btn, (score) => {
+        p.pron[idx] = score;
+        saveProgress();
+        const scoreEl = card.querySelector('[data-score]');
+        if (scoreEl){
+          scoreEl.textContent = 'آخر نتيجة: ' + score + '%';
+          scoreEl.style.color = score >= 70 ? 'var(--ok)' : 'var(--muted)';
+        }
+      });
+    };
+  });
+}
+
+function startRecognition(targetText, fbEl, btn, onScore){
+  if (!SR){
+    fbEl.innerHTML = `<div class="tip" style="background:#fee2e2;border-color:#b91c1c;color:#7f1d1d">التعرّف على الصوت غير مدعوم. استخدم Google Chrome.</div>`;
+    return;
+  }
+  if (activeRec){ try { activeRec.abort(); } catch(e){} activeRec = null; }
+
+  const rec = new SR();
+  activeRec = rec;
+  rec.lang = 'en-US';
+  rec.interimResults = false;
+  rec.maxAlternatives = 1;
+  rec.continuous = false;
+
+  const origLabel = btn.innerHTML;
+  btn.disabled = true;
+  btn.innerHTML = '<span class="rec">● جاري التسجيل...</span>';
+  fbEl.innerHTML = '';
+
+  rec.onresult = (e) => {
+    const spoken = (e.results[0][0].transcript || '').trim();
+    if (!spoken){
+      fbEl.innerHTML = '<div class="tip">لم يُسمع شيء واضح. حاول بصوت أعلى.</div>';
+      return;
+    }
+    const res = compareText(targetText, spoken);
+    const score = res.percent;
+    const words = targetText.split(/\s+/);
+    fbEl.innerHTML = `
+      <div class="said">قلت: <span class="ltr" style="display:inline-block">${esc(spoken)}</span></div>
+      <div class="scored">${words.map((w,i) => `<span class="${res.flags[i] ? 'ok' : 'bad'}">${esc(w)}</span>`).join(' ')}</div>
+      <div class="score-bar"><div class="score-fill" style="width:${score}%"></div></div>
+      <div class="b"><span class="${score>=70?'pass':'fail'}">${score}%</span> — ${res.correct}/${res.total} كلمة صحيحة</div>
+      <div class="tip">${tipFor(score)}</div>`;
+    if (typeof onScore === 'function') onScore(score);
+  };
+  rec.onerror = (e) => {
+    if (e.error === 'aborted') return;
+    fbEl.innerHTML = `<div class="tip" style="background:#fee2e2;border-color:#b91c1c;color:#7f1d1d">تعذّر التسجيل (${esc(e.error)}). تأكد من السماح بالميكروفون.</div>`;
+  };
+  rec.onend = () => {
+    btn.disabled = false;
+    btn.innerHTML = origLabel;
+    if (activeRec === rec) activeRec = null;
+  };
+  try { rec.start(); } catch(e){
+    btn.disabled = false;
+    btn.innerHTML = origLabel;
+    fbEl.innerHTML = `<div class="tip" style="background:#fee2e2;border-color:#b91c1c;color:#7f1d1d">تعذّر بدء التسجيل.</div>`;
+  }
+}
+
+/* ==========================================================================
+   10) الدرس التفاعلي
+   ========================================================================== */
+function renderLesson(body, u, p){
+  if (p.lesson && !lessonState){
+    body.innerHTML = `
+      <div class="card summary">
+        <h2 style="margin-top:0">✅ الدرس مكتمل</h2>
+        <p class="muted">يمكنك مراجعة الملخص أو إعادة الدرس.</p>
+        <ul class="bullets">${u.lesson.summary.map(s => `<li>${esc(s)}</li>`).join('')}</ul>
+        <div class="row">
+          <button class="btn" id="retryLesson">🔄 إعادة الدرس</button>
+          <button class="btn primary" id="goReading">التالي: القراءة ←</button>
+        </div>
+      </div>`;
+    document.getElementById('retryLesson').onclick = () => {
+      p.lesson = false; saveProgress(); lessonState = null; renderApp();
+    };
+    document.getElementById('goReading').onclick = () => {
+      resetLesson(); cur.tab = 'reading'; renderApp();
+    };
+    return;
+  }
+
+  if (!lessonState){
+    lessonState = { step: 0, remaining: COURSE.lessonSeconds, timerId: null, done: false, matches: null };
+    const state = lessonState;
+    const capU = u, capP = p;
+    state.timerId = setInterval(() => {
+      if (lessonState !== state){
+        try { clearInterval(state.timerId); } catch(e){}
+        return;
+      }
+      state.remaining--;
+      const el = document.getElementById('lessonTimer');
+      if (el) el.textContent = fmtTime(state.remaining);
+      if (state.remaining <= 0){
+        state.done = true;
+        try { clearInterval(state.timerId); } catch(e){}
+        finishLesson(capU, capP);
+      }
+    }, 1000);
+  }
+
+  if (lessonState.done){ renderLessonSummary(body, u, p); return; }
+  renderLessonStep(body, u, p);
+}
+
+function renderLessonStep(body, u, p){
+  const acts = u.lesson.activities;
+  if (lessonState.step >= acts.length){ finishLesson(u, p); return; }
+  const act = acts[lessonState.step];
+  const pct = Math.round((lessonState.step / acts.length) * 100);
+
+  body.innerHTML = `
+    <div class="card">
+      <div class="lesson-top">
+        <span>${esc(u.lesson.title)} — ${lessonState.step + 1}/${acts.length}</span>
+        <span class="timer" id="lessonTimer">${fmtTime(lessonState.remaining)}</span>
+      </div>
+      <div class="progress"><div class="progress-fill" style="width:${pct}%"></div></div>
+      <div id="actWrap"></div>
+    </div>`;
+
+  const wrap = document.getElementById('actWrap');
+  if      (act.type === 'vocab') renderVocabAct(wrap, act, u, p);
+  else if (act.type === 'order') renderOrderAct(wrap, act, u, p);
+  else if (act.type === 'mcq')   renderMcqAct(wrap, act, u, p);
+  else if (act.type === 'match') renderMatchAct(wrap, act, u, p);
+}
+
+function advanceLesson(u, p){
+  if (!lessonState) return;
+  lessonState.step++;
+  lessonState.matches = null;
+  if (lessonState.step >= u.lesson.activities.length) finishLesson(u, p);
+  else renderApp();
+}
+
+function finishLesson(u, p){
+  if (lessonState && lessonState.timerId){
+    try { clearInterval(lessonState.timerId); } catch(e){}
+  }
+  if (lessonState) lessonState.done = true;
+  p.lesson = true;
+  saveProgress();
+  renderApp();
+}
+
+function renderLessonSummary(body, u, p){
+  body.innerHTML = `
+    <div class="card summary">
+      <h2 style="margin-top:0">🎉 أحسنت! أكملت الدرس</h2>
+      <ul class="bullets">${u.lesson.summary.map(s => `<li>${esc(s)}</li>`).join('')}</ul>
+      <button class="btn primary" id="nextToReading">التالي: القراءة ←</button>
+    </div>`;
+  document.getElementById('nextToReading').onclick = () => {
+    resetLesson(); cur.tab = 'reading'; renderApp();
+  };
+}
+
+/* -------- أنواع الأنشطة -------- */
+function renderVocabAct(wrap, act, u, p){
+  wrap.innerHTML = `
+    <div class="emoji">${act.emoji}</div>
+    <p class="q" style="text-align:center">${esc(act.ar)}</p>
+    <div class="options" id="opts"></div>`;
+  const opts = document.getElementById('opts');
+  act.options.forEach(opt => {
+    const b = document.createElement('button');
+    b.className = 'btn option';
+    b.textContent = opt;
+    b.onclick = () => {
+      if (b.disabled) return;
+      if (opt === act.answer){
+        b.classList.add('ok-btn');
+        opts.querySelectorAll('button').forEach(x => x.disabled = true);
+        setTimeout(() => advanceLesson(u, p), 500);
+      } else {
+        b.classList.add('bad-btn');
+        b.disabled = true;
+      }
+    };
+    opts.appendChild(b);
+  });
+}
+
+function renderOrderAct(wrap, act, u, p){
+  const shuffled = shuffle(act.words);
+  const answer = [];
+  wrap.innerHTML = `
+    <p class="q">رتّب الكلمات لتكوين جملة صحيحة:</p>
+    <div class="answer-area" id="ansArea"></div>
+    <div class="pool" id="pool"></div>
+    <button class="btn primary block" id="submitOrder" disabled>تحقق ✓</button>
+    <div class="fb" id="orderFb"></div>`;
+
+  const ansArea = document.getElementById('ansArea');
+  const pool    = document.getElementById('pool');
+  const submitBtn = document.getElementById('submitOrder');
+
+  function render(){
+    ansArea.innerHTML = '';
+    if (!answer.length){
+      ansArea.innerHTML = '<span class="ph">اضغط الكلمات بالأسفل لإضافتها</span>';
+    } else {
+      answer.forEach((w, i) => {
+        const c = document.createElement('button');
+        c.className = 'chip';
+        c.textContent = w;
+        c.onclick = () => { answer.splice(i, 1); render(); };
+        ansArea.appendChild(c);
+      });
+    }
+    pool.innerHTML = '';
+    shuffled.forEach(w => {
+      const used  = answer.filter(x => x === w).length;
+      const total = act.words.filter(x => x === w).length;
+      if (used >= total) return;
+      const c = document.createElement('button');
+      c.className = 'chip';
+      c.textContent = w;
+      c.onclick = () => { answer.push(w); render(); };
+      pool.appendChild(c);
+    });
+    submitBtn.disabled = answer.length !== act.words.length;
+  }
+
+  submitBtn.onclick = () => {
+    const built  = answer.join(' ').replace(/\s+/g,' ').trim().replace(/\.$/,'').toLowerCase();
+    const target = act.answer.replace(/\s+/g,' ').trim().replace(/\.$/,'').toLowerCase();
+    const fb = document.getElementById('orderFb');
+    if (built === target){
+      fb.innerHTML = `<div class="tip" style="background:var(--okBg);border-color:var(--ok);color:#14532d">✅ صحيح! ${esc(act.answer)}</div>`;
+      submitBtn.disabled = true;
+      ansArea.querySelectorAll('button').forEach(x => x.disabled = true);
+      pool.querySelectorAll('button').forEach(x => x.disabled = true);
+      setTimeout(() => advanceLesson(u, p), 800);
+    } else {
+      fb.innerHTML = `<div class="tip" style="background:var(--badBg);border-color:var(--bad);color:#7f1d1d">❌ ليس تمامًا. جرّب ترتيبًا آخر.</div>`;
+    }
+  };
+
+  render();
+}
+
+function renderMcqAct(wrap, act, u, p){
+  wrap.innerHTML = `
+    <p class="q">${esc(act.question)}</p>
+    <div class="options" id="opts"></div>`;
+  const opts = document.getElementById('opts');
+  act.options.forEach((opt, i) => {
+    const b = document.createElement('button');
+    b.className = 'btn option';
+    b.textContent = opt;
+    b.onclick = () => {
+      if (b.disabled) return;
+      if (i === act.answer){
+        b.classList.add('ok-btn');
+        opts.querySelectorAll('button').forEach(x => x.disabled = true);
+        setTimeout(() => advanceLesson(u, p), 500);
+      } else {
+        b.classList.add('bad-btn');
+        b.disabled = true;
+      }
+    };
+    opts.appendChild(b);
+  });
+}
+
+function renderMatchAct(wrap, act, u, p){
+  if (!lessonState.matches || lessonState.matches.length !== act.pairs.length){
+    lessonState.matches = act.pairs.map(() => false);
+  }
+  const leftItems  = act.pairs.map((pr, i) => ({ i, text: pr[0] }));
+  const rightItems = shuffle(act.pairs.map((pr, i) => ({ i, text: pr[1] })));
+  let selectedLeft = null;
+
+  wrap.innerHTML = `
+    <p class="q">وصّل الكلمة الإنجليزية بمعناها:</p>
+    <div class="match-wrap">
+      <div class="match-col" id="leftCol"></div>
+      <div class="match-col" id="rightCol"></div>
+    </div>
+    <div class="fb" id="matchFb"></div>`;
+
+  const leftCol  = document.getElementById('leftCol');
+  const rightCol = document.getElementById('rightCol');
+
+  function render(){
+    leftCol.innerHTML = '';
+    rightCol.innerHTML = '';
+
+    leftItems.forEach(item => {
+      const b = document.createElement('button');
+      b.className = 'mbtn'
+        + (lessonState.matches[item.i] ? ' done' : '')
+        + (selectedLeft === item.i ? ' sel' : '');
+      b.textContent = item.text;
+      b.disabled = lessonState.matches[item.i];
+      b.onclick = () => {
+        if (lessonState.matches[item.i]) return;
+        selectedLeft = (selectedLeft === item.i) ? null : item.i;
+        render();
+      };
+      leftCol.appendChild(b);
+    });
+
+    rightItems.forEach(item => {
+      const b = document.createElement('button');
+      b.className = 'mbtn' + (lessonState.matches[item.i] ? ' done' : '');
+      b.textContent = item.text;
+      b.disabled = lessonState.matches[item.i];
+      b.onclick = () => {
+        if (lessonState.matches[item.i] || selectedLeft === null) return;
+        if (selectedLeft === item.i){
+          lessonState.matches[item.i] = true;
+          selectedLeft = null;
+          render();
+          if (lessonState.matches.every(x => x)){
+            setTimeout(() => advanceLesson(u, p), 500);
+          }
+        } else {
+          selectedLeft = null;
+          render();
+          const fb = document.getElementById('matchFb');
+          if (fb){
+            fb.innerHTML = '<div class="tip" style="background:var(--badBg);border-color:var(--bad);color:#7f1d1d">❌ غير صحيح، حاول مرة أخرى.</div>';
+            setTimeout(() => { const e = document.getElementById('matchFb'); if (e) e.innerHTML = ''; }, 1200);
+          }
+        }
+      };
+      rightCol.appendChild(b);
+    });
+  }
+  render();
+}
+
+/* ==========================================================================
+   11) القراءة التفاعلية
+   ========================================================================== */
+function renderReading(body, u, p){
+  body.innerHTML = `
+    <div class="card">
+      <h2 style="margin-top:0">📖 القراءة</h2>
+      <p class="muted small">اختر نصًا، اضغط على أي كلمة لرؤية معناها، ثم اقرأ النص بصوتك.</p>
+      <div class="tabs" id="readTabs">
+        ${u.readings.map((r, i) =>
+          `<button class="tab ${i === 0 ? 'active' : ''}" data-ridx="${i}">
+             ${esc(r.title)} <span class="small muted">(${esc(r.level)})</span>
+           </button>`
+        ).join('')}
+      </div>
+      <div id="readContent"></div>
+    </div>`;
+
+  const tabs = document.querySelectorAll('[data-ridx]');
+  tabs.forEach(t => {
+    t.onclick = () => {
+      tabs.forEach(x => x.classList.remove('active'));
+      t.classList.add('active');
+      renderReadPassage(document.getElementById('readContent'), u, p, +t.dataset.ridx);
+    };
+  });
+  renderReadPassage(document.getElementById('readContent'), u, p, 0);
+}
+
+function renderReadPassage(wrap, u, p, idx){
+  const r = u.readings[idx];
+  const tokens = r.text.split(/(\s+)/);
+  let wordIdx = 0;
+  const html = tokens.map(w => {
+    if (/^\s+$/.test(w)) return w;
+    const clean = w.replace(/[^a-zA-Z']/g, '').toLowerCase();
+    const punct = (w.match(/[.,!?;:]+$/) || [''])[0];
+    const core  = w.replace(/[.,!?;:]+$/, '');
+    return `<span class="pw" data-word="${esc(clean)}" data-idx="${wordIdx++}">${esc(core)}</span>${esc(punct)}`;
+  }).join('');
+
+  const matched = p.readings[r.id] || {};
+
+  wrap.innerHTML = `
+    <div class="trans-box" id="transBox">👆 اضغط على أي كلمة لرؤية معناها</div>
+    <div class="passage">${html}</div>
+    <div class="row">
+      <button class="btn small" id="readAloud">🔊 اسمع النص</button>
+      <button class="btn small primary" id="readPractice">🎤 اقرأ بصوتك</button>
+    </div>
+    <div class="fb" id="readFb"></div>`;
+
+  wrap.querySelectorAll('.pw').forEach(el => {
+    if (matched[el.dataset.idx]) el.classList.add('matched');
+    el.onclick = () => {
+      const w = el.dataset.word;
+      const meaning = COURSE.glossary[w] || '—';
+      const box = document.getElementById('transBox');
+      box.innerHTML = `<span class="ltr"><b>${esc(w)}</b></span> ← <span>${esc(meaning)}</span>`;
+      matched[el.dataset.idx] = true;
+      p.readings[r.id] = matched;
+      saveProgress();
+      el.classList.add('matched');
+    };
+  });
+
+  document.getElementById('readAloud').onclick = () => speak(r.text, 0.9);
+  document.getElementById('readPractice').onclick = () => {
+    startRecognition(r.text, document.getElementById('readFb'), document.getElementById('readPractice'), () => {});
+  };
+}
+
+/* ==========================================================================
+   12) الاختبار الصوتي
+   ========================================================================== */
+function renderTest(body, u, p){
+  if (!testState) testState = { idx: 0, scores: [] };
+
+  // شاشة "تم الاجتياز سابقًا" عند فتح التبويب
+  if (p.passed && !testState.scores.length && testState.idx === 0){
+    body.innerHTML = `
+      <div class="card">
+        <h2 style="margin-top:0">🎤 الاختبار الصوتي</h2>
+        <p>لقد اجتزت هذا الاختبار بنتيجة <b class="pass">${p.voiceTest}%</b>.</p>
+        <div class="row">
+          <button class="btn primary" id="retest">🔄 إعادة الاختبار</button>
+          <button class="btn accent" id="toCert">🏆 الذهاب للشهادة ←</button>
+        </div>
+      </div>`;
+    document.getElementById('retest').onclick = () => {
+      p.passed = false; p.voiceTest = null; saveProgress();
+      testState = null; renderApp();
+    };
+    document.getElementById('toCert').onclick = () => {
+      testState = null; cur.tab = 'cert'; renderApp();
+    };
+    return;
+  }
+
+  const sentences = u.voiceTest;
+
+  // انتهى الاختبار → اعرض النتيجة
+  if (testState.idx >= sentences.length){
+    const avg = Math.round(testState.scores.reduce((a,b) => a+b, 0) / sentences.length);
+    p.voiceTest = avg;
+    p.passed = avg >= COURSE.passingScore;
+    saveProgress();
+
+    body.innerHTML = `
+      <div class="card">
+        <h2 style="margin-top:0">📊 نتيجة الاختبار</h2>
+        <div class="result-big ${p.passed ? 'pass' : 'fail'}">${avg}%        <div class="result-big ${p.passed ? 'pass' : 'fail'}">${avg}%</div>
+        <div class="progress" style="margin:16px 0">
+          <div class="progress-fill" style="width:${avg}%;background:${p.passed ? 'var(--ok)' : 'var(--bad)'}"></div>
+        </div>
+        <p style="text-align:center;font-weight:800;font-size:16px">
+          ${p.passed
+            ? '🎉 مبروك! لقد اجتزت الاختبار بنجاح.'
+            : '😔 لم تجتز الاختبار. تحتاج ' + COURSE.passingScore + '% على الأقل للنجاح.'}
+        </p>
+        <div class="row" style="justify-content:center">
+          <button class="btn" id="retestBtn">🔄 إعادة الاختبار</button>
+          ${p.passed ? '<button class="btn primary" id="toCertBtn">🏆 الذهاب للشهادة ←</button>' : ''}
+        </div>
+      </div>`;
+
+    document.getElementById('retestBtn').onclick = () => {
+      p.passed = false; p.voiceTest = null; saveProgress();
+      testState = null; renderApp();
+    };
+    const certBtn = document.getElementById('toCertBtn');
+    if (certBtn) certBtn.onclick = () => {
+      testState = null; cur.tab = 'cert'; renderApp();
+    };
+    return;
+  }
+
+  /* ----- سؤال الاختبار الحالي ----- */
+  const sentence = sentences[testState.idx];
+  const pct = Math.round((testState.idx / sentences.length) * 100);
+
+  body.innerHTML = `
+    <div class="card">
+      <div class="lesson-top">
+        <span>🎤 الاختبار الصوتي — ${testState.idx + 1} / ${sentences.length}</span>
+        <span class="small muted">حد النجاح: ${COURSE.passingScore}%</span>
+      </div>
+      <div class="progress"><div class="progress-fill" style="width:${pct}%"></div></div>
+      <p class="q" style="text-align:center;margin:24px 0;font-size:22px;line-height:1.6">
+        <span class="ltr">${esc(sentence)}</span>
+      </p>
+      <div class="row" style="justify-content:center">
+        <button class="btn small" id="speakTest">🔊 استمع</button>
+        <button class="btn primary" id="recTest">🎤 سجّل نطقك</button>
+      </div>
+      <div class="fb" id="testFb"></div>
+    </div>`;
+
+  document.getElementById('speakTest').onclick = () => speak(sentence);
+  document.getElementById('recTest').onclick = (e) => {
+    const btn = e.currentTarget;
+    startRecognition(sentence, document.getElementById('testFb'), btn, (score) => {
+      testState.scores.push(score);
+      testState.idx++;
+      setTimeout(() => renderApp(), 1400);
+    });
+  };
+}
+
+/* ==========================================================================
+   13) الشهادة
+   ========================================================================== */
+function renderCert(body, u, p){
+  /* لم يجتز بعد */
+  if (!p.passed){
+    body.innerHTML = `
+      <div class="card">
+        <h2 style="margin-top:0">🏆 الشهادة</h2>
+        <p class="muted">للحصول على الشهادة، يجب اجتياز الاختبار الصوتي أولاً.</p>
+        <div class="tip">الحد الأدنى للنجاح: <b>${COURSE.passingScore}%</b></div>
+        <button class="btn primary block" id="gotoTestBtn" style="margin-top:12px">
+          🎤 الذهاب إلى الاختبار ←
+        </button>
+      </div>`;
+    document.getElementById('gotoTestBtn').onclick = () => {
+      testState = null;
+      cur.tab = 'test';
+      renderApp();
+    };
+    return;
+  }
+
+  /* اسم الطالب — من localStorage بأمان */
+  const studentName = (function(){
+    try {
+      const n = localStorage.getItem('studentName');
+      return (n && n.trim()) ? n.trim() : 'الطالب';
+    } catch(e){ return 'الطالب'; }
+  })();
+
+  const dateStr = new Date().toLocaleDateString('ar-EG', {
+    year: 'numeric', month: 'long', day: 'numeric'
+  });
+
+  body.innerHTML = `
+    <div class="cert-card">
+      <div class="cert-head">
+        <div class="cert-logo">🏆</div>
+        <h1 class="cert-title">شهادة إتمام</h1>
+        <div class="cert-sub ltr">Certificate of Completion</div>
+      </div>
+      <div class="cert-body">
+        <p>تشهد هذه الشهادة بأن</p>
+        <div class="cert-name">${esc(studentName)}</div>
+        <p>قد أتمّ بنجاح وحدة</p>
+        <div class="cert-unit">${esc(u.name)}</div>
+        <div class="cert-unit-en ltr">${esc(u.nameEn)}</div>
+        <p>بنتيجة <b class="pass">${p.voiceTest}%</b> في الاختبار الصوتي</p>
+        <div class="cert-date">${esc(dateStr)}</div>
+      </div>
+      <div class="cert-foot">🎓 منصة تعلّم الإنجليزية</div>
+    </div>
+    <div class="row" style="justify-content:center;margin-top:16px">
+      <button class="btn primary" id="printCertBtn">🖨️ طباعة / حفظ PDF</button>
+      <button class="btn" id="backToHomeBtn">← العودة للوحدات</button>
+    </div>`;
+
+  document.getElementById('printCertBtn').onclick = () => window.print();
+  document.getElementById('backToHomeBtn').onclick = () => {
+    resetLesson();
+    testState = null;
+    cur.view = 'home';
+    cur.unitIndex = null;
+    cur.tab = 'pron';
+    renderApp();
+  };
+}
+
+/* ==========================================================================
+   14) التهيئة والإقلاع
+   ========================================================================== */
+(function boot(){
+  // ربط زر الطباعة بستايل خاص
+  if (!document.getElementById('printStyle')){
+    const st = document.createElement('style');
+    st.id = 'printStyle';
+    st.textContent = `
+      @media print {
+        body * { visibility: hidden !important; }
+        .cert-card, .cert-card * { visibility: visible !important; }
+        .cert-card {
+          position: absolute !important;
+          inset: 0 !important;
+          margin: 0 !important;
+          box-shadow: none !important;
+          border: 2px solid #111 !important;
+        }
+        .row, .tabs, .btn { display: none !important; }
+      }`;
+    document.head.appendChild(st);
+  }
+
+  // أول عرض للتطبيق
+  renderApp();
+})();
